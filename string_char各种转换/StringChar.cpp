@@ -27,6 +27,10 @@ void string2UnsignedChar()
 	string str = std::string(char*)ch;
 }
 
+void string2QString()
+{
+}
+
 /**
 	char* 转unsigned char* 的安全转换方法如下：
 	1. 首先，我们需要定义一个指向 char 类型的指针和一个指向 unsigned char 类型的指针。

@@ -12,8 +12,12 @@ void string2Char();
 // 2、string转unsigned char*
 void string2UnsignedChar();
 
-// 3、char* 转unsigned char*
+// 3、string转QString
+void string2QString();
+
+// 4、char* 转unsigned char*
 void char2unsignedChar();
 
-// 4、int、double 转 string
+// 5、int、double 转 string
 void int2String();
+
