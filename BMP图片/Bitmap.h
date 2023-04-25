@@ -5,7 +5,42 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string> 
-#include <windows.h>
+#include <windows.h>//此头文件包含bmp图片的文件头和位图信息头
+
+/**
+//1、文件头：bitmap file header
+typedef struct tagBITMAPFILEHEADER {
+	WORD  bfType;//文件类型，必须为"BM"，占用2个字节
+	DWORD bfSize;//文件大小，以字节为单位，占用4个字节
+	WORD  bfReserved1;//bfReserved1和bfReserved2：保留字段，占用各2个字节，通常设置为0。
+	WORD  bfReserved2;
+	DWORD bfOffBits;//bfOffBits：位图数据的偏移量，即位图文件头和位图信息头之后的字节数，占用4个字节。
+}  BITMAPFILEHEADER, *LPBITMAPFILEHEADER, *PBITMAPFILEHEADER;
+
+//2、位图信息头 ： bitmap info header
+typedef struct tagBITMAPINFOHEADER {
+    DWORD biSize;//结构体的大小，以字节为单位，必须为40。
+    LONG  biWidth;//位图的宽度，以像素为单位。
+    LONG  biHeight;//位图的高度，以像素为单位。如果值为正数，则表示位图是从上到下的；如果值为负数，则表示位图是从下到上的。
+    WORD  biPlanes;//目标设备的位平面数，必须为1
+    WORD  biBitCount;//每个像素的位数，可以是1、4、8、16、24或32。
+    DWORD biCompression;//指定位图压缩类型。常用的有BI_RGB、BI_RLE8和BI_RLE4。
+    DWORD biSizeImage;//位图数据的大小，以字节为单位。
+    LONG  biXPelsPerMeter;//目标设备水平方向上每米像素数。
+    LONG  biYPelsPerMeter;//目标设备垂直方向上每米像素数。
+    DWORD biClrUsed;//位图实际使用的颜色表中的颜色数。
+    DWORD biClrImportant;//对图像显示有重要影响的颜色索引数。
+} BITMAPINFOHEADER, *LPBITMAPINFOHEADER, *PBITMAPINFOHEADER;
+
+typedef struct tagRGBQUAD {
+	BYTE    rgbBlue;
+	BYTE    rgbGreen;
+	BYTE    rgbRed;
+	BYTE    rgbReserved;
+} RGBQUAD;
+typedef RGBQUAD * LPRGBQUAD;
+
+*/
 
 using namespace std;
 

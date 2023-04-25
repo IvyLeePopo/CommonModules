@@ -11,6 +11,10 @@ static  long iclip[1024];
 static  long *iclp;
 BYTE   And[9] = { 0, 1, 3, 7, 0xf, 0x1f, 0x3f, 0x7f, 0xff };
 
+#define OLD_BMP_PATH		"\\oldBmp.bmp"
+#define NEW_BMP_PATH		"\\newBmp.bmp"
+#define JPEG_2_BMP_PATH		"\\jpeg2bmp.bmp"
+
 CBitmap::CBitmap(void)
 {
 }
@@ -114,12 +118,12 @@ string CBitmap::getModulePath()
 
 void CBitmap::BmpZoom(BITMAPFILEHEADER head, BITMAPINFOHEADER info, unsigned char** pszSrc, unsigned int nSrcLength, unsigned char** pszDst, unsigned int& nDstLength)
 {
-	FILE* file = fopen(string(getModulePath() + "oldBmp.bmp").c_str(), "wb");
+	FILE* file = fopen(string(getModulePath() + OLD_BMP_PATH).c_str(), "wb");
 	fwrite(*pszSrc, 1, nSrcLength, file);
 	fclose(file);
 
-	FILE *fpr1 = fopen(string(getModulePath() + "oldBmp.bmp").c_str(), "rb");
-	FILE *fpw2 = fopen(string(getModulePath() + "newBmp.bmp").c_str(), "wb");
+	FILE *fpr1 = fopen(string(getModulePath() + OLD_BMP_PATH).c_str(), "rb");
+	FILE *fpw2 = fopen(string(getModulePath() + NEW_BMP_PATH).c_str(), "wb");
 	if (fpr1 == NULL || fpw2 == NULL)
 	{
 		printf("图片打开失败!\n");
@@ -179,9 +183,12 @@ void CBitmap::BmpZoom(BITMAPFILEHEADER head, BITMAPINFOHEADER info, unsigned cha
 	nDstLength = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + newSize;
 	*pszDst = new unsigned char[nDstLength];
 
-	FILE* fpr3 = fopen(string(getModulePath() + "newBmp.bmp").c_str(), "rb");
-	fread(*pszDst, nDstLength, 1, fpr3);
-	fclose(fpr3);
+	unsigned char* tmpData = *pszDst;
+	memcpy_s(tmpData, sizeof(BITMAPFILEHEADER), &head, sizeof(BITMAPFILEHEADER));
+	tmpData += sizeof(BITMAPFILEHEADER);
+	memcpy_s(tmpData, sizeof(BITMAPINFOHEADER), &info, sizeof(BITMAPINFOHEADER));
+	tmpData += sizeof(BITMAPINFOHEADER);
+	memcpy_s(tmpData, newSize, dest_data, newSize);
 
 	//释放堆空间
 	delete[] dest_data;
@@ -267,7 +274,7 @@ bool CBitmap::Jpeg2Bmp(const char* pszSrc, int nSrcLength, unsigned char** pszDs
 	if (funcret == FUNC_OK)
 	{
 		//生成bmp图片
-		fopen_s(&hfbmp, string(getModulePath() + "jpeg2bmp.bmp").c_str(), "wb");
+		fopen_s(&hfbmp, string(getModulePath() + JPEG_2_BMP_PATH).c_str(), "wb");
 		fwrite((LPSTR)&bf, sizeof(BITMAPFILEHEADER), 1, hfbmp);
 		fwrite((LPSTR)lpImgData, sizeof(char), BufSize, hfbmp);
 
