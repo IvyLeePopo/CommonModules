@@ -7,3 +7,5 @@
  */
 
 #pragma once
+
+void test();
