@@ -57,6 +57,14 @@ void WebSocketServer::slotStartServer()
     m_pWebSocketServer = new QWebSocketServer(m_strServerName, QWebSocketServer::NonSecureMode, this);
 
     QString strLocalHostIp = getLocalHostIP();
+
+	/**
+	QHostAddress::Any表示服务端监听所有可用的网络接口。
+	它是一个特殊的IP地址，表示服务端可以接受来自任何IP地址的连接请求。
+	这通常用于在一个计算机上运行多个网络服务时，让服务端能够监听所有可用的网络接口，
+	以便接受来自不同网络接口的连接请求。
+	*/
+	//m_pWebSocketServer->listen(QHostAddress::Any, m_Port);
     if (m_pWebSocketServer->listen(QHostAddress(strLocalHostIp), m_nPort))
     {
         connect(m_pWebSocketServer, &QWebSocketServer::newConnection, this, &WebSocketServer::slotNewConnection);
