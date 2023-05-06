@@ -52,3 +52,27 @@ int select(int nfds, fd_set * readfds, fd_set * writefds, fd_set * exceptfds, ti
 		return false;
 	}
 }
+
+
+/*****************************************************************
+ 函数名称：setsockopt
+ 函数描述：
+ 输入参数：sockfd：要设置选项的套接字文件描述符。
+		  level：选项所在协议的层次。常用的值有 SOL_SOCKET（表示套接字选项）、IPPROTO_TCP（表示 TCP 协议选项）、IPPROTO_IP（表示 IP 协议选项）等。
+		  optname：选项名称。常用的选项名称包括 SO_REUSEADDR（重用地址）、SO_KEEPALIVE（保持连接）、TCP_NODELAY（禁用 Nagle 算法）等。
+		  optval：指向选项值的指针。
+		  optlen：选项值的长度。
+ 输出参数：
+ 返回说明：
+ 其它说明：
+ *****************************************************************/
+int setsockopt(int sockfd, int level, int optname, const void * optval, socklen_t optlen)
+{
+	int optval = 1;
+	int ret = setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
+	if (ret < 0) 
+	{
+		perror("setsockopt failed");
+		exit(EXIT_FAILURE);
+	}
+}

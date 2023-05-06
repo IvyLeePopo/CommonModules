@@ -6,9 +6,12 @@
  * @LastEditors: XTZJ-2022OQEHLZ
  */
 
-//try_lock_for是C++11中的一个函数，用于在指定时间内尝试获取一个互斥锁。
+// try_lock_for是C++11中的一个函数，用于在指定时间内尝试获取一个互斥锁。
 template< class Rep, class Period >
 bool try_lock_for(const std::chrono::duration<Rep, Period>& timeout_duration);
 
-//是一种I/O多路复用机制，可以同时监视多个文件描述符的状态
+// 是一种I/O多路复用机制，可以同时监视多个文件描述符的状态
 int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout);
+
+// 是一个用于设置套接字选项的系统调用
+int setsockopt(int sockfd, int level, int optname, const void *optval, socklen_t optlen);
