@@ -23,8 +23,10 @@ inline bool try_lock_for(const std::chrono::duration<Rep, Period>& timeout_durat
  函数描述：是一个在多路I/O中使用的系统调用函数，它用于检查一组文件描述符的状态变化它可以同时检查多个文件描述符，
 	      当其中任意一个文件描述符发生读写等事件时，select()函数就会返回，并且告知哪些文件描述符发生了变化。
  输入参数：nfds是待检查的文件描述符的数量，它是待检查文件描述符的最大值+1;
-          参数readfds、writefds和exceptfds是指向描述符集合的指针;
+          readfds、writefds和exceptfds是指向描述符集合的指针;
 		  timeout用于设置select()函数的超时时间，如果设置为NULL，则select()函数将一直阻塞，直到有文件描述符发生变化为止。
+					在select()调用中，可以将这个结构体作为参数传递给函数，以指定等待的最长时间。
+					如果在指定的时间内没有任何I/O事件发生，则select()函数会返回0。如果出现错误，则返回-1。
  输出参数：
  返回说明：返回值为就绪的文件描述符个数;
 	      如果返回值为0，则表示超时；
@@ -35,6 +37,7 @@ inline bool try_lock_for(const std::chrono::duration<Rep, Period>& timeout_durat
  *****************************************************************/
 int select(int nfds, fd_set * readfds, fd_set * writefds, fd_set * exceptfds, timeval * timeout)
 {
+	//使用方法：
 	int iEvtCnt;
 	fd_set stWriteSet, stExceptSet;
 	struct timeval stTV;
@@ -45,6 +48,12 @@ int select(int nfds, fd_set * readfds, fd_set * writefds, fd_set * exceptfds, ti
 	FD_SET(m_Socket, &stWriteSet);// 将指定的文件描述符fd添加到fd_set中，即将对应的数组元素置为1。
 	FD_SET(m_Socket, &stExceptSet);
 	iEvtCnt = select((int)m_Socket + 1, NULL, &stWriteSet, &stExceptSet, &stTV);  // Wait on read or error
+
+	/**
+	创建一个读的集合readSet并且清空，然后将readSet添加到m_nSocketFd中
+	通过这个函数select，去监视readSet，要是readSet有变化了，就去读readSet这里面的内容
+	要是超过这个tv时间，还没有I/O事件发生，就会返回0
+	*/
 
 	if ((iEvtCnt <= 0) || (FD_ISSET(m_Socket, &stExceptSet)))//FD_ISSET：判断文件描述符fd对应的位是否为1
 	{
@@ -74,5 +83,45 @@ int setsockopt(int sockfd, int level, int optname, const void * optval, socklen_
 	{
 		perror("setsockopt failed");
 		exit(EXIT_FAILURE);
+	}
+}
+
+/*****************************************************************
+ 函数名称：ioctlsocket
+ 函数描述：设置和获取socket的属性和状态
+ 输入参数：s为要设置属性的socket，
+		  cmd为要设置的属性类型，
+							1、常用的属性类型有：
+								FIONBIO：设置socket为非阻塞模式
+								FIONREAD：获取接收缓冲区中的数据大小
+								SIO_KEEPALIVE_VALS：设置TCP keep-alive参数
+							2、常用的状态类型有：
+								SIO_GET_EXTENSION_FUNCTION_POINTER：获取扩展函数指针
+								SIO_GET_INTERFACE_LIST：获取网络接口列表
+								SIO_GET_INTERFACE_LIST_EX：获取扩展网络接口列表
+		  argp为要设置的属性值。
+ 输出参数：
+ 返回说明：
+ 其它说明：
+ *****************************************************************/
+int ioctlsocket(SOCKET s, long cmd, u_long * argp)
+{
+	// 1、设置socket的属性：设置socket为非阻塞模式
+	u_long nonBlocking = 1;
+	if (ioctlsocket(sock, FIONBIO, &nonBlocking) == SOCKET_ERROR) 
+	{
+		// 设置失败
+	}
+
+	//2、获取socket的状态：获取网络接口列表
+	INTERFACE_INFO interfaceList[10];
+	unsigned long interfaceListSize = sizeof(interfaceList);
+	if (ioctlsocket(sock, SIO_GET_INTERFACE_LIST, &interfaceListSize) == SOCKET_ERROR) 
+	{
+		// 获取失败
+	}
+	else 
+	{
+		// 获取成功，处理interfaceList
 	}
 }

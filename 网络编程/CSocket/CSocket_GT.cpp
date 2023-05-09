@@ -49,7 +49,7 @@ bool CHDLCnet::Init_NetWork(const char *pBufIpAddr, const unsigned short iPort, 
 	}
 	getsockopt(sSocket_Temp, SOL_SOCKET, SO_ERROR, (char*)&iError, (int *)&len);
 	ul = 0;
-	ioctlsocket(sSocket_Temp, FIONBIO, &ul); //设置为非阻塞模式
+	ioctlsocket(sSocket_Temp, FIONBIO, &ul); //设置为阻塞模式
 	setsockopt(sSocket_Temp, SOL_SOCKET, SO_SNDTIMEO, (char*)&iNetTimeOut, sizeof(int)); //设置发送的超时时间
 	setsockopt(sSocket_Temp, SOL_SOCKET, SO_RCVTIMEO, (char*)&iNetTimeOut, sizeof(int)); //设置接收的超时时间
 
