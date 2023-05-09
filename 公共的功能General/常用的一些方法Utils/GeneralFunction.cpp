@@ -89,3 +89,23 @@ bool IsRepeatStart(const QRect & rect)
 	}
 	return false;
 }
+
+void initLanguage()
+{
+	m_pTranslator = new QTranslator(this);
+	ENUM_LANGUAGE lang = SettingsMgr::getInstance()->getLanguage();
+	if (lang == LANGUAGE_CHINESE)
+	{
+		LOG(INFO) << "the current is chinese";
+		QString mui = QString(":/zh_CN.qm");
+		m_pTranslator->load(mui);
+		QCoreApplication::installTranslator(m_pTranslator);
+	}
+	else
+	{
+		LOG(INFO) << "the current is English";
+		QString mui = QString(":/en_US.qm");
+		m_pTranslator->load(mui);
+		QCoreApplication::installTranslator(m_pTranslator);
+	}
+}

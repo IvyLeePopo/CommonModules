@@ -19,3 +19,6 @@ void repeatCode();
 
 //4、判断软件是否重复启动
 bool IsRepeatStart(const QRect& rect);
+
+//5、实现多语言
+void initLanguage();
