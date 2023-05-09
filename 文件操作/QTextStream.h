@@ -23,7 +23,10 @@ void read();
 void write();
 
 //4、格式化输出
+void cout();
 
-//5、格式化输出
+//5、读写位置控制
+void ctrPos();
 
-//6、格式化输出
+//6、字符编码设置
+void setCode();
