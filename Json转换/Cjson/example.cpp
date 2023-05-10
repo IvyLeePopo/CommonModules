@@ -1,4 +1,4 @@
-#include "json.h"
+#include "example.h"
 #include "GeneralDefine.h"//自己定义的一些
 /**
 	实例演示：
@@ -44,5 +44,26 @@ bool parseJsonData(const string & strJson, string & strStatusCode)
 	}
 
 	return false;
+}
+
+//结构体里面有数组，转json
+string Stuct2Json(tagRspVehQTypeParam &tagParams)
+{
+	Json::Value root;
+	Json::FastWriter writer;
+	//指令应答头部
+	root["RegVehTypeNo"] = Json::Value(tagParams.RegVehTypeNo);
+	root["SerialNo"] = Json::Value(tagParams.SerialNo);
+	//数组的个数
+	size_t nNum = tagParams.content.size();
+	Json::Value contentRoot, contentRootObj;
+	for (size_t index = 0; index < nNum; ++index)
+	{
+		contentRootObj["RegId"] = Json::Value(tagParams.content.at(index).RegId);
+		contentRootObj["VehPlate"] = Json::Value(tagParams.content.at(index).VehPlate);
+		contentRoot.append(contentRoot);
+	}
+	root["VehTypeQueue"] = contentRoot;
+	return writer.write(root);
 }
 

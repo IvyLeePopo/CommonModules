@@ -109,3 +109,12 @@ void initLanguage()
 		QCoreApplication::installTranslator(m_pTranslator);
 	}
 }
+
+void checkResult()
+{
+#define CheckResult(a)  if(!(a)) \
+  return;
+#define CheckResultWithRet(a, b)  if(!(a)) \
+  return (b);
+
+}

@@ -22,3 +22,6 @@ bool IsRepeatStart(const QRect& rect);
 
 //5、实现多语言
 void initLanguage();
+
+//6、判断对象对错：定义宏
+void checkResult();
