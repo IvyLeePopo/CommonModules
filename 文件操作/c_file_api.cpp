@@ -1,4 +1,4 @@
-#include "CFile.h"
+#include "c_file_api.h"
 
 /**
 *	常见的文件打开模式mode包括：
