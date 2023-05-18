@@ -12,7 +12,6 @@ MyServer::MyServer(const QString& serverName, quint16 port) :
 	, m_nPort(port)
 	, m_strServerName(serverName)
 {
-
 }
 
 MyServer::~MyServer()
@@ -54,11 +53,20 @@ void MyServer::slotStartServer()
 
 	m_pWebSocketServer = new QWebSocketServer(m_strServerName, QWebSocketServer::NonSecureMode, this);
 
+#if 1 //1-监听特定的ip, 0-监听任意的网络 QHostAddress::Any
 	QString strLocalHostIp = getLocalHostIP();
 	if (m_pWebSocketServer->listen(QHostAddress(strLocalHostIp), m_nPort))
 	{
 		connect(m_pWebSocketServer, &QWebSocketServer::newConnection, this, &MyServer::slotNewConnection);
 	}
+#else
+	if (m_pWebSocketServer->listen(QHostAddress::Any, m_nPort))
+	{
+		QTextStream(stdout) << mServerName << " listening on port " << m_nPort << '\n';
+		connect(m_pWebSocketServer, &QWebSocketServer::newConnection, this, &MyServer::slotNewConnection);
+	}
+#endif // 1
+
 }
 
 // 有新的连接会进入这个函数
