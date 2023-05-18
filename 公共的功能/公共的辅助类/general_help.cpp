@@ -1,4 +1,4 @@
-#include "GeneralHelp.h"
+#include "general_help.h"
 
 #include <QProcess>
 #include <QDateTime>
