@@ -24,6 +24,10 @@ namespace JsonUtils
 	QJsonObject getJsonObjectFromByteArray(const QByteArray &byteArray);
 	QByteArray getByteArrayFromJsonObject(const QJsonObject &jsonObject);
 
+	// QString 与 QJsonArray和QJsonObject
+	QString JsonArrayToString(QJsonArray jsonArray);
+	QString JsonObjectToString(QJsonObject jsonObj);
+
 	// 判断key是否存在
 	bool jsonValIsNullOrNonExists(const QJsonObject &jsonObj, const QString &key);
 
