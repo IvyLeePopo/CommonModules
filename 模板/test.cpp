@@ -1,26 +1,10 @@
-// 1. 导入 hashlib 库
-import hashlib
-
-// 2. 创建一个 SHA - 256 对象
-sha256 = hashlib.sha256()
-
-// 3. 将需要哈希的数据传递给 SHA - 256 对象
-sha256.update(b"Hello, World!")
-
-// 4. 获取 SHA - 256 哈希值
-hash_value = sha256.digest()
-
-// 5. 可以将哈希值转换为十六进制字符串进行存储或传输
-hex_value = hash_value.hex()
-
-// 完整示例代码：
-import hashlib
-
-sha256 = hashlib.sha256()
-sha256.update(b"Hello, World!")
-hash_value = sha256.digest()
-hex_value = hash_value.hex()
-
-print(hex_value)
-
-// 输出：b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9
+1. __iter__()：返回迭代器对象本身。
+2. __next__()：返回迭代器中的下一个元素。
+3. iter()：返回一个迭代器对象。
+4. next()：返回迭代器中的下一个元素。
+5. enumerate()：返回一个枚举对象，包含索引和元素。
+6. zip()：将多个迭代对象合并为一个元组。
+7. reversed()：返回逆序的迭代器。
+8. sorted()：返回排序后的迭代器。
+9. filter()：返回符合条件的元素迭代器。
+10. map()：返回对元素进行操作后的迭代器。

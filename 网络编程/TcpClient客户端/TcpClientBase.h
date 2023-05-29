@@ -73,6 +73,9 @@ private slots:
     // 接收数据
     void slotRecv(QByteArray byteArray);
 
+	// 套节字错误
+	void slotSocketError(QAbstractSocket::SocketError);
+
 protected:
     int m_nPort;                // port
     string m_strIp;             // ip

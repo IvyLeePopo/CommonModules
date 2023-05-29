@@ -13,7 +13,7 @@ TcpClientBase::TcpClientBase()
     connect(m_pSocket, &QTcpSocket::readyRead, this, &TcpClientBase::slotRecvMsg);
     connect(m_pSocket, &QTcpSocket::connected, this, &TcpClientBase::slotConnected);
     connect(m_pSocket, &QTcpSocket::disconnected, this, &TcpClientBase::slotDisConnected);
-    connect(m_pSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(slotReadError(QAbstractSocket::SocketError)));
+	connect(m_pSocket, QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::errorOccurred), this, &TcpClientBase::SlotSocketError);
 
     m_pConnectTimer = new QTimer();
     m_pConnectTimer->setSingleShot(false);
@@ -120,3 +120,10 @@ void TcpClientBase::slotRecv(QByteArray byteArray)
     int nLen = byteArray.length();
     recv(pszData, nLen);
 }
+
+void TcpClientBase::slotSocketError(QAbstractSocket::SocketError)
+{
+	QString data = m_pSocket->errorString();
+	qDebug() << __LINE__ << __FUNCTION__ << data;
+}
+
