@@ -103,12 +103,13 @@ void LabelScroll::timerEvent(QTimerEvent *e)
     if(e->timerId() == timerId && isVisible())
     {
         left += spixel;// (0,0)在左上角，每次增加对应像素
-        if((left + 20) > (text_wpixel + blank_wp) )// 表示到末尾了
-            left = 1-( this->width() ); //重新添加,负数代表从最右边开始
+
+		//  判断是否已经完成一遍循环，完成则恢复起始位置，重新开始循环
+		if (left > (text_wpixel + blank_wp))
+			left = 0;
 
         //repaint();//立即触发一次刷新，不会产生冗余，但是耗性能
         update();//不会立马刷新，有可能产生事件冗余，但是节省性能　　　　　　
-        //update和repaint的区别，请看QT文档说明
     }
 
     QLabel::timerEvent(e);
@@ -128,7 +129,9 @@ void LabelScroll::paintEvent(QPaintEvent *e)
     rc.setHeight(rc.height() /*- 2*/);
     rc.setWidth(rc.width() /*- 2*/);
 
-    QString strText = blank + text();
+	QString strText = text();
+	strText += blank + text();
+
     rc.setLeft(rc.left() - left); //修改矩形 x轴, 由于left在不断变大，setLeft就在不断变小,(0,0)在左上角,固左移
     pen.drawText(rc,Qt::AlignVCenter, strText);//根据给定的矩形坐标，绘制标签
 }
