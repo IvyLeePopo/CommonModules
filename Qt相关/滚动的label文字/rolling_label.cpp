@@ -1,6 +1,6 @@
-#include "labelscroll.h"
+#include "rolling_label.h"
 
-LabelScroll::LabelScroll(QWidget *parent):QLabel(parent)
+RollingLabel::RollingLabel(QWidget *parent):QLabel(parent)
 {
     timerId = -1;// 定时器的ID
     text_wpixel = 0; //文本的像素长度
@@ -13,14 +13,14 @@ LabelScroll::LabelScroll(QWidget *parent):QLabel(parent)
     flag = 0;//默认不处理
 }
 
-LabelScroll::~LabelScroll()
+RollingLabel::~RollingLabel()
 {
     if(timerId >= 0)
         killTimer(timerId);
 }
 
 //在设置文本、缩放事件两次调用自适应的函数
-void LabelScroll::setText(const QString &txt)
+void RollingLabel::setText(const QString &txt)
 {
     if(Qt::mightBeRichText(txt))//判断是否为富文本
         flag = 0;  //0不处理，直接用原本的绘画事件显示，当属于富文本时使用这个 1左到右 2上到下
@@ -32,21 +32,21 @@ void LabelScroll::setText(const QString &txt)
 }
 
 //设置图片，主要把lt设回0，使其恢复正常的图片显示
-void LabelScroll::setPixmap(const QPixmap &pix)
+void RollingLabel::setPixmap(const QPixmap &pix)
 {
     flag=0;
     QLabel::setPixmap(pix);
 }
 
 //窗口变化事件
-void LabelScroll::resizeEvent(QResizeEvent *e)
+void RollingLabel::resizeEvent(QResizeEvent *e)
 {
     QLabel::resizeEvent(e);
     upateLabelRollingState();
 }
 
 // 根据给定的数值，修改滚动速度  sp是一次滚动多少像素,st是多少秒触发一次滚动
-void LabelScroll::setspeed(int sp,int st)
+void RollingLabel::setspeed(int sp,int st)
 {
     spixel = sp;
     speedt = st;
@@ -55,7 +55,7 @@ void LabelScroll::setspeed(int sp,int st)
 }
 
 //用来判断label文本是否需要滚动起来，是这块功能的核心
-void LabelScroll::upateLabelRollingState()
+void RollingLabel::upateLabelRollingState()
 {
     //获取文本大小，小于文本框长度，则无需滚动
     QFont ft = font();// 获取当前字体的格式，里面有文本大小和文本像素大小
@@ -98,7 +98,7 @@ void LabelScroll::upateLabelRollingState()
 }
 
 //定时改位移量，到末尾时改为开头  负责修改当前像素位移值
-void LabelScroll::timerEvent(QTimerEvent *e)
+void RollingLabel::timerEvent(QTimerEvent *e)
 {
     if(e->timerId() == timerId && isVisible())
     {
@@ -116,7 +116,7 @@ void LabelScroll::timerEvent(QTimerEvent *e)
 }
 
 //重绘事件，根据位移量left显示文本
-void LabelScroll::paintEvent(QPaintEvent *e)
+void RollingLabel::paintEvent(QPaintEvent *e)
 {
     if(flag == 0){ //　不处理，直接调用标签的默认函数
         QLabel::paintEvent(e);

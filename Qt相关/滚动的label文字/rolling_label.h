@@ -1,5 +1,4 @@
-#ifndef LABELSCROLL_H
-#define LABELSCROLL_H
+#pragma once
 
 #include <QDebug>
 #include <QLabel>
@@ -9,12 +8,12 @@
 #include <QPainter>
 
 // 继承于标签，之后在qt设计师内右键选择"提升" 使得这个继承类控制对应需要滚动的标签
-class LabelScroll :public QLabel
+class RollingLabel :public QLabel
 {
     Q_OBJECT
 public:
-    explicit LabelScroll(QWidget *parent = nullptr);
-    ~LabelScroll();
+    explicit RollingLabel(QWidget *parent = nullptr);
+    ~RollingLabel();
 
     //自适应函数，判断label文本是否需要滚动起来
     void upateLabelRollingState();
@@ -54,5 +53,3 @@ private:
 
     uint8_t flag; //判断是否应该开启滚动 0否 1真
 };
-
-#endif // LABELSCROLL_H
