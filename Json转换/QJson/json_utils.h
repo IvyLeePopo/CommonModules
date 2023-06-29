@@ -12,6 +12,17 @@
 
 namespace JsonUtils
 {
+	/**
+	1、读取Json 字符串的数据：
+	（1）QByteArray -> QJsonDocument：
+		QJsonDocument parseDoc = QJsonDocument::fromJson(bytes, &jsonError);
+
+	（2）QJsonDocument -> QJsonObject：
+		QJsonObject jsonObj = parseDoc.object();
+	*/
+
+
+
 	// json字符串 与 QJsonObject对象
 	QJsonObject getJsonObjectFromString(const QString &jsonString);
 	QString getStringFromJsonObject(const QJsonObject &jsonObject);

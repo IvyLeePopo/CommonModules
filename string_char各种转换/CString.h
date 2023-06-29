@@ -8,3 +8,6 @@
  * @LastEditors: XTZJ-2022OQEHLZ
  */
 
+// 打印十六进制的字符
+void printfCString();
+

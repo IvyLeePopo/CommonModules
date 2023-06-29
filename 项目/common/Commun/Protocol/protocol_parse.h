@@ -16,6 +16,25 @@
 #pragma once 
 #include <QByteArray>
 
+namespace ProtocolParse
+{
+	// 收到原始数据，要做一系列的操作
+	void ParseProtocolData(std::vector<std::string>& c0_queue, std::vector<unsigned char>& real_data);
+
+	// 打包数据，再发送
+	bool packBytes(eSubCmdType_t subCmdType, const string& jsonData, u8* pcucDstData, u32& nDstLen);
+
+	// CRC校验
+	bool crc16(const u8* byte, int len, u8* cHi, u8* cLo);
+	unsigned short crc16(const std::vector<unsigned char>::const_iterator& it_first, const std::vector<unsigned char>::const_iterator& it_second);
+
+
+	// 转义
+	bool EscapeComProtocol(const std::vector<unsigned char>& src, std::vector<unsigned char>&dst);
+	bool UnEscapeComProtocol(const std::vector<unsigned char>& src, std::vector<unsigned char>&dst);
+
+};
+
 class ProtocolParse
 {
 public:

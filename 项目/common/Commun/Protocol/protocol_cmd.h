@@ -1,0 +1,9 @@
+#pragma once
+
+#define TWPD_STARTFLAG  0xDF    //帧开始取值
+#define TWPD_ENDFLAG    0xFD    //帧结束取值
+#define TWPD_NUMBER     0x00    //帧协议编号
+#define TWPD_STARTFLAG_ESCAPE_FIRST 0xDE
+#define TWPD_STARTFLAG_ESCAPE_SECOND 0x01
+#define TWPD_ENDFLAG_ESCAPE_FIRST 0xFC
+#define TWPD_ENDFLAG_ESCAPE_SECOND 0x01

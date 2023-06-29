@@ -1,10 +1,10 @@
-1. __iter__()：返回迭代器对象本身。
-2. __next__()：返回迭代器中的下一个元素。
-3. iter()：返回一个迭代器对象。
-4. next()：返回迭代器中的下一个元素。
-5. enumerate()：返回一个枚举对象，包含索引和元素。
-6. zip()：将多个迭代对象合并为一个元组。
-7. reversed()：返回逆序的迭代器。
-8. sorted()：返回排序后的迭代器。
-9. filter()：返回符合条件的元素迭代器。
-10. map()：返回对元素进行操作后的迭代器。
+3. unique_ptr<T, D>：创建一个指向类型为T的对象的unique_ptr，并使用自定义删除器D。
+4. unique_ptr<T[], D>：创建一个指向类型为T的数组对象的unique_ptr，并使用自定义删除器D。
+5. reset()：释放unique_ptr所拥有的对象并将其置为nullptr。
+6. release()：释放unique_ptr所拥有的对象但不删除它，并返回指向该对象的指针。
+7. operator*()：返回unique_ptr所指向的对象的引用。
+8. operator->()：返回unique_ptr所指向的对象的指针。
+9. operator bool() const：判断unique_ptr是否持有对象，返回true或false。
+10. get()：返回unique_ptr所持有对象的指针。
+11. swap()：交换两个unique_ptr的值。
+12. deleter()：返回unique_ptr的删除器对象。
