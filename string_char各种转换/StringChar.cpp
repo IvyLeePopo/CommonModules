@@ -75,3 +75,64 @@ void int2String()
 	double num = atof(str);
 	printf("num = %lf\n", num);
 }
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+////函数名称:fnHexToBin
+////函数功能:将16进制的字符串转换成2进制的数字
+////输入参数:IN PBYTE	pHex		-- 需要转换的16进制字符串
+////		 OUT PBYTE	pbin		-- 输出的2进制数字数组
+////		 IN DWORD	dwHex_len	-- 需要转换的16进制数据长度,必须为2的倍数
+////输出参数:无
+////编写时间:2008-11-08
+////编写人员:ROCY
+////修改时间:
+////修改人员:
+////函数版本:1.0.0.1
+////备注说明:所输入的16进制字符串长度必须是2的倍数
+//////////////////////////////////////////////////////////////////////////////////////////
+void Hex2Bin(IN LPTSTR lpHex, OUT PBYTE pBin, IN DWORD dwHex_len)
+{
+	if (dwHex_len % 2)
+		return;
+
+	CString strTemp(lpHex);
+	strTemp.MakeUpper();
+
+	USES_CONVERSION;
+	for (int i = 0; i < strTemp.GetLength() / 2; i++)
+	{
+		BYTE a = (BYTE)(strTemp.GetAt(i * 2) >= 'A') ? (BYTE)(strTemp.GetAt(i * 2) - 'A' + 10) : (BYTE)(strTemp.GetAt(i * 2) - '0');
+		BYTE b = (BYTE)(strTemp.GetAt(i * 2 + 1) >= 'A') ? (BYTE)(strTemp.GetAt(i * 2 + 1) - 'A' + 10) : (BYTE)(strTemp.GetAt(i * 2 + 1) - '0');
+		pBin[i] = (BYTE)(a * 0x10 + b);
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+////函数名称:BinToHex
+////函数功能:将2进制的数字转换成16进制的字符串
+////输入参数:IN PBYTE	pBin		-- 需要转换的2进制数字数组
+////		 IN DWORD	dwHex_len	-- 需要转换的2进制数字数组长度
+////输出参数:CString	非空 -- 转换成功后输出的16进制字符串
+////		 CString	NULL -- 转换失败
+////编写时间:2008-11-08
+////编写人员:ROCY
+////修改时间:
+////修改人员:
+////函数版本:1.0.0.1
+////备注说明:如果调用成功后,不需要调用者释放内存
+//////////////////////////////////////////////////////////////////////////////////////////
+CString Bin2Hex(IN PBYTE pBin, IN DWORD dwBin_Len)
+{
+	CString strHex;
+	CString strTemp;
+	if (NULL != pBin)
+	{
+		for (DWORD i = 0; i < dwBin_Len; ++i)
+		{
+			strTemp.Format(_T("%02X"), pBin[i]);
+			strHex += strTemp;
+		}
+	}
+	return strHex;
+}

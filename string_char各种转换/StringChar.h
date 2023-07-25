@@ -21,3 +21,10 @@ void char2unsignedChar();
 // 5、int、double 转 string
 void int2String();
 
+// 6、十六进制的字串转为二进制的字符串
+void Hex2Bin(IN LPTSTR lpHex, OUT PBYTE pBin, IN DWORD dwHex_len);
+
+// 7、二进制的字串转为十六进制的字符串
+CString Bin2Hex(IN PBYTE pBin, IN DWORD dwBin_Len)
+
+
