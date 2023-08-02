@@ -1,15 +1,15 @@
 #pragma once
 
 #include "WebsocketThreadBase.h"
-#include "WebSocketBase.h"
 
-class WebSocketServer: public WebSocketThreadBase
+// 回调函数，将websocket的结果抛给上层
+typedef void(*recvMsgToSerial)(const char* pszData, unsigned int  nSize);
+
+class WebSocketServer : public WebSocketThreadBase
 {
 public:
 	WebSocketServer(void);
 	virtual ~WebSocketServer(void);
-
-	virtual int circle();
 
 	// 启动服务器 
 	bool startServer(/*const char* pszIp, const int nPort*/);
@@ -18,23 +18,19 @@ public:
 	void stopServer();
 
 	// 发送数据到客户端
-	bool sendData(const char* pszJson, int nSize);
+	bool sendData(const char* pszJson, unsigned int nSize);
 
 	// 接收客户端数据
-	bool receiveData(const char* pszData, int nSize);
+	bool receiveData(const char* pszData, unsigned int nSize);
 
-	// 接收读卡器从串口传送过来的数据
-	void readFromReader();
+	// 设置回调函数
+	void setCallBack(recvMsgToSerial pFunc, void* pUser = NULL);
 
 private:
 	// 初始化websocket
 	void init();
 
-	// 反初始化
-	void unInit();
-
 private:
-	//WebSocketBase* m_pWebSocketBase;
-
-	char*  m_pszRecvDataReader; // 读卡器从串口传送过来的数据
+	void* m_pUser;							// 返回回调的对象
+	recvMsgToSerial m_pRecvMsgToSerial;		// 回调
 };

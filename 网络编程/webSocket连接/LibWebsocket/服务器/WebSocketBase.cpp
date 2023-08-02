@@ -39,13 +39,13 @@ static int callback_websocket(struct lws *pWsi, enum lws_callback_reasons reason
 	{
 	case LWS_CALLBACK_ESTABLISHED:					// 连接到客户端（正常只有一个客户端）
 		WebSocketBaseServer->connectResult(true);
+		//sendMessageToClient_Test(pWsi);
 		break;
 	case LWS_CALLBACK_RECEIVE:						// 接收客户端数据
-		WebSocketBaseServer->recvMsgByCallBack((const char*)pRecvData, (int)nLen);
-		sendMessageToClient_Test(pWsi);
+		WebSocketBaseServer->recvMsgByCallBack((const char*)pRecvData, (unsigned int)nLen);
 		break;
 	case LWS_CALLBACK_SERVER_WRITEABLE:				// 服务端可以发送数据了
-		WebSocketBaseServer->consumeSendMsg();
+		WebSocketBaseServer->consumeSendMsg(pWsi);
 		break;
 	case LWS_CALLBACK_CLOSED:						// 断开连接
 		if (WebSocketBaseServer->isCanRun())
@@ -63,14 +63,14 @@ static struct lws_protocols protocols[] = {
 };
 
 WebSocketBase::WebSocketBase(void)
-: m_pLwsCtxInfo(nullptr)
-, m_pContext(nullptr)
-, m_pWsi(nullptr)
-, m_bIsConnected(false)
-, m_pUser(nullptr)
-, m_pRecvWebSocketFunc(nullptr)
-, m_bErrorDisconnect(false)
-, m_nReconnectTimes(0)
+	: m_pLwsCtxInfo(nullptr)
+	, m_pContext(nullptr)
+	, m_pWsi(nullptr)
+	, m_bIsConnected(false)
+	, m_pUser(nullptr)
+	, m_pRecvWebSocketFunc(nullptr)
+	, m_bErrorDisconnect(false)
+	, m_nReconnectTimes(0)
 {
 	init();
 }
@@ -100,7 +100,7 @@ int WebSocketBase::circle()
 {
 	while (isCanRun())
 	{
-		//lws_callback_on_writable_all_protocol(m_pContext, &protocols[0]);
+		lws_callback_on_writable_all_protocol(m_pContext, &protocols[0]);
 		lws_service(m_pContext, 1000);
 	}
 	lws_context_destroy(m_pContext);
@@ -123,6 +123,7 @@ void WebSocketBase::init()
 	m_pLwsCtxInfo->uid = -1;
 
 	m_listMsg.clear();
+	m_bCanRun = false;
 }
 
 void WebSocketBase::unInit()
@@ -142,6 +143,25 @@ void WebSocketBase::unInit()
 
 bool WebSocketBase::startSever()
 {
+	struct lws_context_creation_info info;
+	memset(&info, 0, sizeof(info));
+	info.port = 9000;
+	info.protocols = protocols;
+
+	m_pContext = lws_create_context(&info);
+	if (!m_pContext)
+	{
+		return false;
+	}
+
+	lws_service(m_pContext, 1000);
+	vStart();
+	return true;
+}
+
+
+bool WebSocketBase::startSever1(/*const char* pszIp, const int nPort*/)
+{
 	if (nullptr == m_pLwsCtxInfo)
 		return false;
 
@@ -151,72 +171,19 @@ bool WebSocketBase::startSever()
 		m_pContext = nullptr;
 	}
 
-	m_pLwsCtxInfo->port = 9000;
-	m_pLwsCtxInfo->protocols = protocols;
-
-	// 创建服务器句柄
-	m_pContext = lws_create_context(m_pLwsCtxInfo);
-	if (!m_pContext) 
-	{
-		return false;
-	}
-
-	lws_service(m_pContext, 1000);
-
-	vStart();
-	return true;
-}
-
-bool WebSocketBase::startSever1()
-{
-	if (nullptr == m_pLwsCtxInfo)
-		return false;
-
-	if(nullptr != m_pContext)
-	{
-		lws_context_destroy(m_pContext);
-		m_pContext = nullptr;
-	}
-
 	int port = 9000;
 	m_pLwsCtxInfo->port = port;
 
 	m_pContext = lws_create_context(m_pLwsCtxInfo);//创建上下文对象，管理ws
-	if (!m_pContext) 
+	if (!m_pContext)
 	{
+		WRITE_LOG("Failed to create context");
 		return false;
 	}
 
-	//设置服务器消费的发送数据
+	//启动服务器
 	lws_callback_on_writable_all_protocol(m_pContext, &protocols[0]);
 	lws_service(m_pContext, 1000); //处理WebSocket连接的事件
-
-	return true;
-}
-
-bool WebSocketBase::startSever2()
-{
-	struct lws_context_creation_info info;
-	struct lws_context *context;
-
-	memset(&info, 0, sizeof(info));
-	info.port = 9000;
-	info.protocols = protocols;
-
-	context = lws_create_context(&info);
-	if (!context) {
-		printf("Failed to create context\n");
-		return -1;
-	}
-
-	printf("WebSocket server started on port %d\n", info.port);
-
-	while (1) 
-	{
-		lws_service(context, 1000);
-	}
-
-	lws_context_destroy(context);
 
 	return true;
 }
@@ -234,8 +201,8 @@ bool WebSocketBase::stopServer()
 
 bool WebSocketBase::send(const char* pszJson, int nSize)
 {
-	if(isCanRun())
-		return false;
+	//if(isCanRun())
+	//	return false;
 
 	if (nullptr == pszJson)
 		return false;
@@ -244,11 +211,12 @@ bool WebSocketBase::send(const char* pszJson, int nSize)
 	_lock();
 #endif
 	// 此处先检查一下缓存，避免异常情况下，数据发送不出去导致的缓存堆积了
-	if (m_listMsg.size() > 30)
-		m_listMsg.clear();
+	pair<int, char*> pairData;
+	pairData.first = nSize;
+	pairData.second = new char[pairData.first];
+	memcpy(pairData.second, pszJson, pairData.first);
 
-	m_listMsg.push_back(pszJson);
-
+	m_listMsg.push_back(pairData);
 
 #ifdef NO_threadProc
 	_unLock();
@@ -258,7 +226,6 @@ bool WebSocketBase::send(const char* pszJson, int nSize)
 
 void WebSocketBase::setCallBack(recvWebSocketMsg pFunc, void* pUser)
 {
-	this;
 	if (nullptr != pFunc)
 		m_pRecvWebSocketFunc = pFunc;
 
@@ -266,64 +233,69 @@ void WebSocketBase::setCallBack(recvWebSocketMsg pFunc, void* pUser)
 		m_pUser = pUser;
 }
 
+void WebSocketBase::setCallBackConnectResult(recvWebSocketMsgConnectResult pFunc, void* pUser)
+{
+	if (nullptr != pFunc)
+		m_pRecvWebSocketFuncConnectResult = pFunc;
+
+	if (nullptr != pUser)
+		m_pUser1 = pUser;
+}
+
 void WebSocketBase::connectResult(bool bConnect)
 {
 	if (0 != m_nReconnectTimes)
 	{
-		char szBuf[1024] = {0};
+		char szBuf[1024] = { 0 };
 		sprintf_s(szBuf, "websocket连接-%s:%d", m_strIp.c_str(), m_nPort);
 		m_strLog = szBuf;
 		m_nReconnectTimes = 0;
 	}
-	
+
 	resetConnected(bConnect);
 	reseErrortDisconnect(!bConnect);
 }
 
-void WebSocketBase::consumeSendMsg()
+void WebSocketBase::consumeSendMsg(struct lws *pWsi)
 {
 	if (m_listMsg.size() < 1)
 		return;
 
-	string strData;
+	int nSize;
+	char* pszData;
 
 #ifdef NO_threadProc
 	_lock();
 #endif
 
-	list<string>::reverse_iterator rIter = m_listMsg.rbegin();
-	strData = *rIter;
+	list<pair<int, char*>>::reverse_iterator rIter = m_listMsg.rbegin();
+	pair<int, char*> pairData = *rIter;
+	nSize = pairData.first;
+	pszData = new char[nSize];
+	memcpy(pszData, pairData.second, nSize);
 	m_listMsg.pop_back();		// 从队列删除
 
 #ifdef NO_threadProc
 	_unLock();
 #endif
 
-	if (strData.empty())
+	if (nSize < 10)
 		return;
 
-	int nSize = (int)strData.size();
 	char *pszBuf = new char[nSize + LWS_PRE];
 	memset(&pszBuf[LWS_PRE], 0, nSize);
-	memcpy(&pszBuf[LWS_PRE], strData.c_str(), nSize);
-	m_nSendResult = lws_write(m_pWsi, (unsigned char*)&pszBuf[LWS_PRE], nSize, LWS_WRITE_TEXT);
+	memcpy(&pszBuf[LWS_PRE], pszData, nSize);
+	m_nSendResult = lws_write(pWsi, (unsigned char*)&pszBuf[LWS_PRE], nSize, LWS_WRITE_TEXT);
 
-	delete [] pszBuf;
+	delete[] pszBuf;
 	pszBuf = nullptr;
+
+	delete[] pszData;
+	pszData = nullptr;
 }
 
-void WebSocketBase::writeLog(const char* pszData)
+bool WebSocketBase::recvMsgByCallBack(const char* pszData, unsigned int nSize)
 {
-	if (nullptr == pszData || nullptr == m_pRecvWebSocketFunc)
-		return;
-
-	string strErr = LOGTYPE + string(pszData);
-	m_pRecvWebSocketFunc(m_pUser, strErr.c_str(), (int)strErr.size());
-}
-
-bool WebSocketBase::recvMsgByCallBack(const char* pszData, int nSize)
-{
-	this;
 	if (nullptr == pszData || nullptr == m_pRecvWebSocketFunc)
 		return false;
 
