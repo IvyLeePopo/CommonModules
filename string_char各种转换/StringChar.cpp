@@ -29,6 +29,11 @@ void string2UnsignedChar()
 
 void string2QString()
 {
+	//1¡¢QString×ª»»String
+	string s = qstr.toStdString();
+
+	//2¡¢String×ª»»QString
+	QString qstr2 = QString::fromStdString(s);
 }
 
 /**

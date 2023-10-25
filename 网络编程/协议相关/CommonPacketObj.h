@@ -61,14 +61,17 @@ public:
     static bool CheckPackage(const std::vector<uint8>& vecData);     //CRC校验判断
     static vector<uint8> CRC_16(vector<uint8> &byte, uint32 len);     //CRC校验
     static vector<uint8> unEscapeComProtocol(vector<uint8> &lpData, uint32 len, uint32 bSendState);   //转译，bSendState：1发送，0接收
-    //编码格式转换
+    
+	//编码格式转换
     static vector<uint8> VectorUTF8ToGBK(char *msg, int len);
     static QByteArray BytesUTF8ToGBK(char *msg, int len);
     static vector<uint8> VectorGBKToUTF8(char *msg, int len);
     static QByteArray BytesGBKToUTF8(char *msg, int len);
+
     //packet打包
     static vector<uint8> PackBytes(DevFunctionType1 actionType, uint8 objectType, vector<uint8>& objectData);
     static vector<uint8> PackBytes(uint8 actionType, uint8 objectType, char *msg, int len);
+
     //unpacket解包
     static vector<vector<uint8>> UnPackBytes(vector<uint8>& data);
 };
