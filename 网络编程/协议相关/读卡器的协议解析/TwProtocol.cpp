@@ -17,6 +17,7 @@ typedef ULONG_PTR DWORD_PTR, *PDWORD_PTR;
 
 #define LOBYTE(w)           ((BYTE)(((DWORD_PTR)(w)) & 0xff))
 #define HIBYTE(w)           ((BYTE)((((DWORD_PTR)(w)) >> 8) & 0xff))
+#define DATA_OFFSET			7
 
 #define MAKEWORD(a, b)      ((WORD)(((BYTE)(((DWORD_PTR)(a)) & 0xff)) | ((WORD)((BYTE)(((DWORD_PTR)(b)) & 0xff))) << 8))
 #define MAKEWORDBIG(fir,sec) ( MAKEWORD((sec),(fir)) )
@@ -49,17 +50,15 @@ bool TW_Protocol::PackBytes(eSubCmdType_t subCmdType, const string & jsonData, s
 	return true;
 }
 
-bool TW_Protocol::UnPackBytes(const u8 * pcucSrcData, int nSrcLen, eSubCmdType_t correctSubCmd, string & jsonData, int& index)
+bool TW_Protocol::UnPackBytes(const u8 * pcucSrcData, int nSrcLen, eSubCmdType_t correctSubCmd, string & jsonData)
 {
 	if (NULL == pcucSrcData || 0 == nSrcLen)
 	{
-		index = 1;
 		return false;
 	}
 
 	if (nSrcLen <= 10)
 	{
-		index = 2;
 		return false;
 	}
 
@@ -72,33 +71,16 @@ bool TW_Protocol::UnPackBytes(const u8 * pcucSrcData, int nSrcLen, eSubCmdType_t
 	//拿到数据先转义，再解包
 	UnEscapeComProtocol(src, dst);
 
-	// 开始解析data
-	if (eProtocolConst::PROTOCOL_HEADER != dst.at(0) ||
-		eProtocolConst::PROTOCOL_NUMBER != dst.at(3) ||
-		eProtocolConst::PROTOCOL_NUMBER != dst.at(4))
-	{
-		index = 3;
+	//转义就检查这个包是否合理
+	if(CheckPackage(dst))
 		return false;
-	}
 
-	if (correctSubCmd != dst.at(6))
-	{
-		index = 7;
-		return false;
-	}
-
-	unsigned int nDstLen = (0xFF00 & (dst.at(1) << 8)) + (0xFF & dst.at(2));
-	if (eProtocolConst::PROTOCOL_END != dst.at(nDstLen + 10 - 1))
-	{
-		index = 8;
-		return false;
-	}
-
+	//转义成功
 	u8* pszDst = new u8[nDstLen];
 	memset(pszDst, 0, nDstLen);
 	for (int index = 0; index < nDstLen; index++)
 	{
-		pszDst[index] = dst.at(index + DATA_OFFSET);
+		pszDst[index] = dst.at(index + DATA_OFFSET);//只需要真正的数据，不要帧头、长度、编号、效验码、帧尾
 	}
 
 	jsonData = (char *)pszDst;

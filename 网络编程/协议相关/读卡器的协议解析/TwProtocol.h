@@ -38,7 +38,7 @@ namespace TW_Protocol
 {
 	//组包、解包
 	bool PackBytes(eSubCmdType_t subCmdType, const string& jsonData, std::vector<unsigned char>& escapePackage);
-	bool UnPackBytes(const u8 * pcucSrcData, int nSrcLen, eSubCmdType_t correctSubCmd, string& jsonData, int& index);
+	bool UnPackBytes(const u8 * pcucSrcData, int nSrcLen, eSubCmdType_t correctSubCmd, string& jsonData);
 
 	// 转义
 	bool EscapeComProtocol(const std::vector<unsigned char>& src, std::vector<unsigned char>&dst);
