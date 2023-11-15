@@ -13,14 +13,6 @@
 typedef unsigned char		u8;
 typedef unsigned char       BYTE;
 typedef unsigned short      WORD;
-typedef ULONG_PTR DWORD_PTR, *PDWORD_PTR;
-
-#define LOBYTE(w)           ((BYTE)(((DWORD_PTR)(w)) & 0xff))
-#define HIBYTE(w)           ((BYTE)((((DWORD_PTR)(w)) >> 8) & 0xff))
-#define DATA_OFFSET			7
-
-#define MAKEWORD(a, b)      ((WORD)(((BYTE)(((DWORD_PTR)(a)) & 0xff)) | ((WORD)((BYTE)(((DWORD_PTR)(b)) & 0xff))) << 8))
-#define MAKEWORDBIG(fir,sec) ( MAKEWORD((sec),(fir)) )
 
 
 
@@ -28,8 +20,10 @@ bool TW_Protocol::PackBytes(eSubCmdType_t subCmdType, const string & jsonData, s
 {
 	std::vector<unsigned char> package;
 	unsigned short len = static_cast<unsigned short>(jsonData.size());
-	package.push_back(HIBYTE(len));
-	package.push_back(LOBYTE(len));
+	unsigned char chLen1 = 0xFF & (len >> 8);
+	unsigned char chLen2 = 0xFF & len;
+	package.push_back(chLen1);
+	package.push_back(chLen2);
 
 	package.push_back(eProtocolConst::PROTOCOL_NUMBER);
 	package.push_back(eProtocolConst::PROTOCOL_NUMBER);
@@ -41,8 +35,10 @@ bool TW_Protocol::PackBytes(eSubCmdType_t subCmdType, const string & jsonData, s
 	std::copy(data.begin(), data.end(), std::back_inserter(package));
 
 	unsigned short crc_code = crc16(package.begin(), package.end());
-	package.push_back(HIBYTE(crc_code));
-	package.push_back(LOBYTE(crc_code));
+	unsigned char crc_code1 = 0xFF & (crc_code >> 8);
+	unsigned char crc_code2 = 0xFF & crc_code;
+	package.push_back(crc_code1);
+	package.push_back(crc_code2);
 
 	//组包完，转义，后面再发送出去
 	EscapeComProtocol(package, escapePackage);
@@ -87,7 +83,6 @@ bool TW_Protocol::UnPackBytes(const u8 * pcucSrcData, int nSrcLen, eSubCmdType_t
 
 	return true;
 }
-
 
 bool TW_Protocol::EscapeComProtocol(const std::vector<unsigned char>& src, std::vector<unsigned char>&dst)
 {
@@ -246,13 +241,15 @@ bool TW_Protocol::CheckPackage(const std::vector<u8>& data)
 	{
 		return false;
 	}
-
-	unsigned short package_crc = MAKEWORD(data[package_len - 2], data[package_len - 3]);
+	
 	unsigned short calc_crc = crc16(data.begin() + 1, data.end() - 3);
+	unsigned char crc_code1 = 0xFF & (calc_crc >> 8);
+	unsigned char crc_code2 = 0xFF & calc_crc;
+
 	std::vector<u8> tmp;
 	tmp.insert(tmp.begin(), data.begin() + 1, data.end() - 2);
 
-	if (package_crc != calc_crc)//协议校验失败:CRC错误
+	if (!(data[package_len - 3] == crc_code1 && data[package_len - 2] == crc_code2))//协议校验失败:CRC错误
 	{
 		return false;
 	}
