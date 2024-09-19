@@ -141,3 +141,19 @@ CString Bin2Hex(IN PBYTE pBin, IN DWORD dwBin_Len)
 	}
 	return strHex;
 }
+
+
+//把16进制数复制成QString
+QString HexCopyToQString(char*data, int len)
+{
+	QString strData = "";
+	QString dd = "";
+	for (int i = 0; i < len; ++i)
+	{
+		dd = QString::number((unsigned char)data[i], 16).toUpper();
+		if (dd.length() == 1)  //补0
+			dd = "0" + dd;
+		strData = strData + dd;
+	}
+	return strData;
+}

@@ -3,7 +3,7 @@
 void loadDll()
 {
 	QString strLibFile = "/opt/scaner/lib/libICC_GV.so"; //金益读卡器库
-	m_libReader = new QLibrary(strLibFile);
+	QLibrary *m_libReader = new QLibrary(strLibFile);
 
 	if (!m_libReader->load())
 		qDebug() << __LINE__ << __FUNCTION__ << "load fail";
