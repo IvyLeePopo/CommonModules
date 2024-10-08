@@ -13,3 +13,39 @@ void printfCString()
 		strLog1 += str;
 	}
 }
+
+//读卡器发出来的指令是 char* 
+//1、转化为十六进制的字符，打印出来
+void printf_char2HexString()
+{
+	CString strLog;
+	for (int nIndex = 0; nIndex < nSize; nIndex++)
+	{
+		CString str;
+		str.Format(_T("%02X"), pszData[nIndex] & 0xFF);
+		strLog += str;
+	}
+}
+
+//CString转char*
+const char* szStr = strLog.GetString();
+
+//char*转string
+std::string cmd_data(szStr);
+
+//数据格式之间的转换：
+//1、QByteArray转vector
+void QByteArray2vector()
+{
+	vector<unsigned int> m_VerData;
+	QByteArray array;
+	m_VerData.insert(m_VerData.end(), array.begin(), array.end());
+}
+
+//2、vector转QByteArray
+void vector2QByteArray()
+{
+	vector<unsigned int> m_VerData;
+	QByteArray array(reinterpret_cast<const char*>(m_VerData.data()), static_cast<int>(m_VerData.size()));
+}
+

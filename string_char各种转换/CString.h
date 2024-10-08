@@ -11,3 +11,24 @@
 // 打印十六进制的字符
 void printfCString();
 
+//读卡器发出来的指令是 char* 
+//1、转化为十六进制的字符，打印出来
+void printf_char2HexString();
+
+//CString转char*
+const char* szStr = strLog.GetString();
+
+//char*转string
+std::string cmd_data(szStr);
+
+//数据格式之间的转换：
+//1、QByteArray转vector
+void QByteArray2vector();
+
+//2、vector转QByteArray
+void vector2QByteArray();
+
+
+
+
+
