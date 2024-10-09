@@ -1,0 +1,822 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DataBase_TestTool</class>
+ <widget class="QWidget" name="DataBase_TestTool">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1296</width>
+    <height>970</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>DataBase_TestTool</string>
+  </property>
+  <widget class="QPushButton" name="btn_connectDB">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>20</y>
+     <width>110</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>连接数据库</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_connectStatus">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>30</y>
+     <width>171</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>状态：待连接</string>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>210</y>
+     <width>230</width>
+     <height>331</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>添加数据</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,3">
+      <item>
+       <widget class="QLabel" name="label_orderId">
+        <property name="text">
+         <string>订单ID：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_orderId">
+        <property name="text">
+         <string>12345678</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,3">
+      <item>
+       <widget class="QLabel" name="label_orderId_2">
+        <property name="text">
+         <string>入口：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_entry">
+        <property name="text">
+         <string>天河</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,3">
+      <item>
+       <widget class="QLabel" name="label2">
+        <property name="text">
+         <string>金额：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_money">
+        <property name="text">
+         <string>1</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="1,3">
+      <item>
+       <widget class="QLabel" name="label_22">
+        <property name="text">
+         <string>车牌：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_plate">
+        <property name="text">
+         <string>粤A12345</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,3">
+      <item>
+       <widget class="QLabel" name="label_type">
+        <property name="text">
+         <string>车型：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_type">
+        <item>
+         <property name="text">
+          <string>客一</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>客二</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>客三</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>客四</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>货一</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>货二</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>货三</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>货四</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="1,3">
+      <item>
+       <widget class="QLabel" name="label_weight">
+        <property name="text">
+         <string>重量：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_weight">
+        <property name="text">
+         <string>1234</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,3">
+      <item>
+       <widget class="QPushButton" name="btn_add">
+        <property name="text">
+         <string>添加数据</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_addDataStatus">
+        <property name="text">
+         <string>状态：待添加</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_2">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>210</y>
+     <width>230</width>
+     <height>331</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>查询数据</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_8">
+      <item>
+       <widget class="QLabel" name="label_orderId_3">
+        <property name="text">
+         <string>订单ID：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_queryOrderID">
+        <property name="text">
+         <string>12345678</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="1,3">
+      <item>
+       <widget class="QPushButton" name="btn_query">
+        <property name="text">
+         <string>查询数据</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_queryStatus">
+        <property name="text">
+         <string>状态：待查询</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>查询结果：</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="1,3">
+      <item>
+       <widget class="QLabel" name="label_orderId_4">
+        <property name="text">
+         <string>入口：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_entryQuery">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="1,3">
+      <item>
+       <widget class="QLabel" name="label_money_2">
+        <property name="text">
+         <string>金额：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_moneyQuery">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_12" stretch="1,3">
+      <item>
+       <widget class="QLabel" name="label_plateQuery22">
+        <property name="text">
+         <string>车牌：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_plateQuery">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_13" stretch="1,3">
+      <item>
+       <widget class="QLabel" name="label_type_2">
+        <property name="text">
+         <string>车型：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_typeQuery">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_14" stretch="1,3">
+      <item>
+       <widget class="QLabel" name="label_weight_2">
+        <property name="text">
+         <string>重量：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_weightQuery">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_3">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>560</y>
+     <width>1251</width>
+     <height>401</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>展示所有数据</string>
+   </property>
+   <widget class="QTableView" name="tableView">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>90</y>
+      <width>1221</width>
+      <height>301</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_showAll">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>40</y>
+      <width>110</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>展示所有数据</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_4">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>210</y>
+     <width>230</width>
+     <height>331</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>更新数据</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_3">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_15" stretch="1,3">
+      <item>
+       <widget class="QLabel" name="label_orderId_5">
+        <property name="text">
+         <string>订单ID：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_orderIdUpdate">
+        <property name="text">
+         <string>12345678</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_16" stretch="1,3">
+      <item>
+       <widget class="QLabel" name="label_orderId_6">
+        <property name="text">
+         <string>入口：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_entryUpdate">
+        <property name="text">
+         <string>天河</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_17" stretch="1,3">
+      <item>
+       <widget class="QLabel" name="label2_2">
+        <property name="text">
+         <string>金额：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_moneyUpdate">
+        <property name="text">
+         <string>1</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_18" stretch="1,3">
+      <item>
+       <widget class="QLabel" name="label_23">
+        <property name="text">
+         <string>车牌：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_plateUpdate">
+        <property name="text">
+         <string>粤A12345</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_19" stretch="1,3">
+      <item>
+       <widget class="QLabel" name="label_type_3">
+        <property name="text">
+         <string>车型：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_typeUpdate">
+        <item>
+         <property name="text">
+          <string>客一</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>客二</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>客三</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>客四</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>货一</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>货二</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>货三</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>货四</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_20" stretch="1,3">
+      <item>
+       <widget class="QLabel" name="label_weight_3">
+        <property name="text">
+         <string>重量：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_weightUpdate">
+        <property name="text">
+         <string>1234</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_21" stretch="1,3">
+      <item>
+       <widget class="QPushButton" name="btn_update">
+        <property name="text">
+         <string>更新数据</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_updateDataStatus">
+        <property name="text">
+         <string>状态：待更新</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_5">
+   <property name="geometry">
+    <rect>
+     <x>790</x>
+     <y>210</y>
+     <width>230</width>
+     <height>191</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>删除订单</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_5">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_22" stretch="1,3">
+      <item>
+       <widget class="QLabel" name="label_orderId_7">
+        <property name="text">
+         <string>订单ID：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_orderIdDelete">
+        <property name="text">
+         <string>12345678</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_23" stretch="1,3">
+      <item>
+       <widget class="QPushButton" name="btn_delete">
+        <property name="text">
+         <string>删除订单</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_deleteDataStatus">
+        <property name="text">
+         <string>状态：待删除</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>33</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_24">
+      <item>
+       <widget class="QPushButton" name="btn_deleteAll">
+        <property name="text">
+         <string>删除全部</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_deleteAllStatus">
+        <property name="text">
+         <string>状态：待删除</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="btn_queryExec">
+   <property name="geometry">
+    <rect>
+     <x>780</x>
+     <y>80</y>
+     <width>101</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>执行Sql语句</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_execSqlStatus">
+   <property name="geometry">
+    <rect>
+     <x>900</x>
+     <y>80</y>
+     <width>211</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>状态：待执行</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>120</y>
+     <width>961</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>例如:
+(1)INSERT INTO orderData (orderId, entry, money, plate, type, weight) VALUES (&quot;63945&quot;, &quot;滘口&quot;, &quot;99&quot;, &quot;粤A777Q1&quot;, &quot;客一&quot;, &quot;1800&quot;);
+(2)UPDATE orderData SET entry = &quot;滘口&quot;, money = &quot;99&quot;, plate = &quot;粤A777Q1&quot;, type = &quot;客一&quot;, weight = &quot;客一&quot; WHERE orderId=&quot;22834&quot;;</string>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="textEdit_sql">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>70</y>
+     <width>721</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="html">
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;DELETE FROM orderData WHERE orderId=1234567;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_6">
+   <property name="geometry">
+    <rect>
+     <x>1040</x>
+     <y>210</y>
+     <width>241</width>
+     <height>251</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>测试</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_4">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_25" stretch="1,3">
+      <item>
+       <widget class="QLabel" name="label_orderId_8">
+        <property name="text">
+         <string>次数：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_count">
+        <property name="text">
+         <string>100</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_26" stretch="1,3">
+      <item>
+       <widget class="QLabel" name="label_orderId_9">
+        <property name="text">
+         <string>下标：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_index">
+        <property name="text">
+         <string>1</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_27">
+      <item>
+       <widget class="QPushButton" name="btn_addDataMore">
+        <property name="text">
+         <string>添加数据</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_addStatusMore">
+        <property name="text">
+         <string>状态：待添加</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_28">
+      <item>
+       <widget class="QPushButton" name="btn_dbTotalCount">
+        <property name="text">
+         <string>数据库的总数</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_dbTotalCount">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>SizeHorCursor</cursorShape>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>
